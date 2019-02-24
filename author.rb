@@ -1,13 +1,13 @@
-
 class Author
 
-attr_reader :books, :name
+attr_reader :name
 
 @@authors = []
+@@TopAuthor =[]
 
-  def initialize(name)
+  def initialize(name=nil)
     @name = name
-    @@author << self  
+    @@authors << self
   end
 
   def self.all
@@ -19,8 +19,7 @@ attr_reader :books, :name
   end
 
   def write_book(title, wordcount)
-     book = Book.new(self, title, wordcount)
-     @books << book
+     Book.new(self, title, wordcount)
   end
 
   def total_words
@@ -29,13 +28,24 @@ attr_reader :books, :name
       Book.all.map { |book| book.author == self
           totalwords += book.wordcount
         }
+
+        return totalwords
   end
 
-  # - `Author.most_words`
-  # should return the author instance who has written the most words
-    def self.most_words
 
+  def self.most_words
+        topwordcount = 0
+        topwordcount_author = nil
+
+        Book.all.select { |book| book.wordcount > topwordcount
+           topwordcount_author = book.author
+           topwordcount = book.wordcount
+        }
+
+      return topwordcount_author
     end
+
+end
 
 # ### `Author`
 # Build the following methods on the Author class
@@ -55,6 +65,5 @@ attr_reader :books, :name
 # - `Author#total_words`
 # should return the total number of words that author has written across all of their authored books.
 
-
-
-end
+# - `Author.most_words`
+# should return the author instance who has written the most words
